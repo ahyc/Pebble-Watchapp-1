@@ -1,0 +1,38 @@
+{
+    "appKeys": {},
+    "capabilities": [
+        ""
+    ],
+    "companyName": "adrianchung@hotmail.co.uk",
+    "enableMultiJS": true,
+    "longName": "RUN MAXv1.0",
+    "projectType": "native",
+    "resources": {
+        "media": [
+            {
+                "file": "fonts/AGENCYB.TTF",
+                "name": "FONT_AGENCY_BOLD_30",
+                "targetPlatforms": null,
+                "type": "font"
+            },
+            {
+                "file": "data/watch run1.png",
+                "name": "WATCH_GIF",
+                "targetPlatforms": [
+                    "basalt"
+                ],
+                "type": "raw"
+            }
+        ]
+    },
+    "sdkVersion": "3",
+    "shortName": "RUN MAXv1.0",
+    "targetPlatforms": [
+        "basalt"
+    ],
+    "uuid": "2c74327b-af33-47a4-ae98-f20d32e45df7",
+    "versionLabel": "1.0",
+    "watchapp": {
+        "watchface": false
+    }
+}

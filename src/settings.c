@@ -11,51 +11,51 @@ static uint8_t hlNo;
 
 //Methods to check whether to vibrate when a process begins/ends:
 void longVibrate(vibeStatus page) {
-	if(page == Vibes) {		vibes_long_pulse();		}
+	if(page == Vibes) {	vibes_long_pulse();	}
 }
 
 void shortVibrate(vibeStatus page) {
-	if(page == Vibes) {		vibes_short_pulse();		}	
+	if(page == Vibes) {	vibes_short_pulse();	}	
 }
 
 void doubleVibrate(vibeStatus page) {
-	if(page == Vibes) {		vibes_double_pulse();		}	
+	if(page == Vibes) {	vibes_double_pulse();	}	
 }
 
 static void up_click_handler(ClickRecognizerRef recognizer, void *context) {
 	//Toggles the selected option backwards:
-	if((hlNo - 1) < 0) {		hlNo = 3;		}
-			else {		hlNo--;		}
-	
+	hlNo = ((hlNo - 1) < 0)? 3: hlNo-1;
 	layer_mark_dirty(s_settings_select);
 }
 
 static void select_click_handler(ClickRecognizerRef recognizer, void *context) {
-		//Turns on/off specific, or all, vibration:
-		switch(hlNo) {
-			default:
-			case 0: vibes.run = noVibes;		vibes.main = noVibes;			vibes.stats = noVibes;
-							break;
-			case 1:	vibes.main = !vibes.main;
-							break;
-			case 2:	vibes.run = !vibes.run;
-							break;
-			case 3:	vibes.stats = !vibes.stats;
-							break;
-		};
-		layer_mark_dirty(s_settings_buttons);
+	//Turns on/off specific, or all, vibration:
+	switch(hlNo) {
+		default:
+		case 0: 
+		vibes.run = vibes.main = vibes.stats = noVibes;
+		break;
+		case 1:	
+		vibes.main = !vibes.main;
+		break;
+		case 2:	
+		vibes.run = !vibes.run;
+		break;
+		case 3:	
+		vibes.stats = !vibes.stats;
+		break;
+	};
+	layer_mark_dirty(s_settings_buttons);
 }
 
 static void down_click_handler(ClickRecognizerRef recognizer, void *context) {
 	//Toggles the selected option forwards:
-	if((hlNo + 1) % 4 != 0) {		hlNo++;		}
-			else {		hlNo = 0;		}
-	
+	hlNo = ((hlNo + 1) % 4 != 0)? hlNo+1: 0;
 	layer_mark_dirty(s_settings_select);
 }
 
 static void back_click_handler(ClickRecognizerRef recognizer, void *context) {
-		window_stack_remove(s_settings_window,true);
+	window_stack_remove(s_settings_window,true);
 }
 
 static void click_config_provider(void *context) {
@@ -68,21 +68,19 @@ static void click_config_provider(void *context) {
 
 static void saveSettings(void) {
 	//Saves the vibration settings:
-	int valueWritten;
-	valueWritten = persist_write_data(VSET_KEY, &vibes, sizeof(vibes));
-	APP_LOG(APP_LOG_LEVEL_WARNING, "Wrote %d bytes to settings.", valueWritten);
+	persist_write_data(VSET_KEY, &vibes, sizeof(vibes));
+		//APP_LOG(APP_LOG_LEVEL_WARNING, "Wrote %d bytes to settings.", valueWritten);
 }
 
 //Checks the vibration settings of all windows:
 void checkVSettings (void) {
 	if (persist_exists(VSET_KEY)) {
-		int valueRead;
-		valueRead = persist_read_data(VSET_KEY, &vibes, sizeof(vibes));
-		APP_LOG(APP_LOG_LEVEL_WARNING, "Read %d bytes from settings", valueRead);
+		persist_read_data(VSET_KEY, &vibes, sizeof(vibes));
+			//APP_LOG(APP_LOG_LEVEL_WARNING, "Read %d bytes from settings", valueRead);
 	}
 	else {
 		//If there are no vibration settings, all windows do vibrate with button pushes:
-		vibes.run = Vibes;		vibes.main = Vibes;			vibes.stats = Vibes;
+		vibes.run = vibes.main = vibes.stats = Vibes;
 		saveSettings();
 	}
 }
@@ -96,17 +94,10 @@ static void select_update_callback(Layer *layer, GContext *ctx) {
 	const char* optionLabel[] = {"[All OFF]", "Main", "Run", "Stats"};
 	
 	for(int i = 0; i<4; i++) {
-		if(hlNo != i) {		graphics_context_set_stroke_color(ctx, GColorBlack);		}
-		else {		graphics_context_set_stroke_color(ctx, GColorLavenderIndigo);		}
-		GRect setOptions;
-		if(i == 0) {
-			graphics_draw_round_rect(ctx, GRect(5, 34+(i*30)+((i+1)*3), bounds.size.w-9, 30), 5);
-			setOptions = GRect(5, (i*33)+34, bounds.size.w-10, 33); 
-		} 
-		else {
-			graphics_draw_round_rect(ctx, GRect(5, 34+(i*30)+((i+1)*3), bounds.size.w-50, 30), 5);
-			setOptions = GRect(5, (i*33)+34, bounds.size.w-50, 33); 
-		}
+		(hlNo != i)? graphics_context_set_stroke_color(ctx, GColorBlack): graphics_context_set_stroke_color(ctx, GColorLavenderIndigo);	
+		GRect setLabels = (i==0)? GRect(5, 34+(i*30)+((i+1)*3), bounds.size.w-9, 30): GRect(5, 34+(i*30)+((i+1)*3), bounds.size.w-49, 30);
+		graphics_draw_round_rect(ctx, setLabels, 5);
+		GRect setOptions = (i==0)? GRect(5, (i*33)+34, bounds.size.w-10, 33): GRect(5, (i*33)+34, bounds.size.w-50, 33);
 		graphics_draw_text(ctx, optionLabel[i], fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD), setOptions, GTextOverflowModeTrailingEllipsis, GTextAlignmentCenter, NULL);
 	}
 }
@@ -129,18 +120,18 @@ static void buttons_update_callback(Layer *layer, GContext *ctx) {
 		GPoint OOpos;
 		switch(i) {
 				default:
-				case 1: if(vibes.main == Vibes) {		graphics_context_set_fill_color(ctx, GColorLavenderIndigo);
-																						OOpos = GPoint(bounds.size.w-12, 48+(i*30)+((i+1)*3));		}
-									else {		OOpos = GPoint(bounds.size.w-32, 48+(i*30)+((i+1)*3));		}
-								break;
-				case 2:	if(vibes.run == Vibes) {		graphics_context_set_fill_color(ctx, GColorLavenderIndigo);
-																						OOpos = GPoint(bounds.size.w-12, 48+(i*30)+((i+1)*3));		}
-									else {		OOpos = GPoint(bounds.size.w-32, 48+(i*30)+((i+1)*3));		}
-								break;
-				case 3:	if(vibes.stats == Vibes) {	graphics_context_set_fill_color(ctx, GColorLavenderIndigo);	
-																						OOpos = GPoint(bounds.size.w-12, 48+(i*30)+((i+1)*3));		}
-									else {		OOpos = GPoint(bounds.size.w-32, 48+(i*30)+((i+1)*3));		}
-								break;
+				case 1: 
+					if(vibes.main == Vibes) {	graphics_context_set_fill_color(ctx, GColorLavenderIndigo);	}
+					OOpos = (vibes.main == Vibes)? GPoint(bounds.size.w-12, 48+(i*30)+((i+1)*3)): GPoint(bounds.size.w-32, 48+(i*30)+((i+1)*3));
+					break;
+				case 2:	
+					if(vibes.run == Vibes) {	graphics_context_set_fill_color(ctx, GColorLavenderIndigo);	}
+					OOpos = (vibes.run == Vibes)? GPoint(bounds.size.w-12, 48+(i*30)+((i+1)*3)): GPoint(bounds.size.w-32, 48+(i*30)+((i+1)*3));
+					break;
+				case 3:	
+					if(vibes.stats == Vibes) {	graphics_context_set_fill_color(ctx, GColorLavenderIndigo);	}
+					OOpos = (vibes.stats == Vibes)? GPoint(bounds.size.w-12, 48+(i*30)+((i+1)*3)): GPoint(bounds.size.w-32, 48+(i*30)+((i+1)*3));
+					break;
 		}
 		graphics_fill_circle(ctx, OOpos, 6);
 		graphics_draw_circle(ctx, OOpos, 6);

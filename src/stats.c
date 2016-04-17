@@ -56,12 +56,10 @@ static void info_update_callback(Layer *layer, GContext *ctx) {
 }
 
 static void up_click_handler(ClickRecognizerRef recognizer, void *context) {
-	//Increments the 'saveInNo', ie the saving point:
-	if(saveInNo % maxNoRecords != 0) {
-			saveInNo++;
-	}
-	else {	saveInNo = 1;	}
-	
+	//Increments the 'saveInNo', ie the record number:
+	saveInNo = (saveInNo % maxNoRecords != 0)? saveInNo+1: 1;
+
+	//Initialises the tab number:
 	stattab = TAB1;
 
 	//May vibrate depending on settings and freshes the stats layer:
@@ -94,7 +92,7 @@ static void back_click_handler(ClickRecognizerRef recognizer, void *context) {
 }
 
 static void click_config_provider(void *context) {
-	// Register the ClickHandlers:
+	//Register the ClickHandlers:
   window_single_click_subscribe(BUTTON_ID_BACK, back_click_handler);
 	window_single_click_subscribe(BUTTON_ID_SELECT, select_click_handler);
 	window_single_click_subscribe(BUTTON_ID_UP, up_click_handler);
@@ -113,20 +111,17 @@ static void showNoOfCheckPoints(GContext *ctx) {
 		snprintf(checkNo, sizeof(checkNo), "%d", i+1);
 		
 		//Curent record is drawn in various positions within the layer:
-		GRect position;
-		if(i<5) {	position = GRect(2, 38+(i*25), 16, 20);	}
-		else {	position = GRect(74, 38+((i-5)*25), 16, 20);	}
+		GRect position = (i<5)? GRect(2, 38+(i*25), 16, 20): GRect(74, 38+((i-5)*25), 16, 20);
 		graphics_draw_text(ctx, checkNo, fonts_get_system_font(FONT_KEY_GOTHIC_18_BOLD), position, GTextOverflowModeTrailingEllipsis, GTextAlignmentCenter, NULL);
 
 		// Get time of the run and place time into buffer:	
 		int currentTime = times[saveInNo-1].checkPoints[i];
-		int seconds = currentTime % 60;		int minutes = currentTime / 60;
+		int seconds = currentTime % 60;	
+		int minutes = currentTime / 60;
 		snprintf(time_buffer, sizeof(time_buffer), "%02d:%02d", minutes, seconds);
 
 		//Saved time of checkpoint is drawn onto layer:
-		GRect timerBox;
-		if(i<5) {	timerBox = GRect(18, 38+(i*25), 54, 20);	}
-		else {	timerBox = GRect(90, 38+((i-5)*25), 54, 20);	}
+		GRect timerBox = (i<5)? GRect(18, 38+(i*25), 54, 20): GRect(90, 38+((i-5)*25), 54, 20);
 		graphics_draw_text(ctx, time_buffer, fonts_get_system_font(FONT_KEY_GOTHIC_18), timerBox, GTextOverflowModeTrailingEllipsis, GTextAlignmentCenter, NULL);
 	}
 }
@@ -135,28 +130,11 @@ static int findMaxDiff(uint8_t saveInNo) {
 	//Method to find the maximum difference between checkpoints in current saving record:
 	int maxDiff = 0, diff = 0;
 	for(int i =0; i<times[saveInNo].noOfCheckPoints; i++) {
-			if(i != 0) {	diff = times[saveInNo].checkPoints[i] - times[saveInNo].checkPoints[i-1];	}
-				else { diff = times[saveInNo].checkPoints[i];	}
-			maxDiff = diff>maxDiff? diff: maxDiff; 
+		diff = (i != 0)? times[saveInNo].checkPoints[i] - times[saveInNo].checkPoints[i-1]: times[saveInNo].checkPoints[i];
+		maxDiff = diff>maxDiff? diff: maxDiff; 
 	}
 	return maxDiff;
 }
-
-/*static void convertTime(char buffer[], int time) {
-	// Get time of the run:
-	int seconds = time % 60;
-	int minutes = (time % 3600) / 60;
-	int hours = time / 3600;
-
-	if(time>3580)	{
-		snprintf(buffer, sizeof(&buffer), "%02d:%02d:%02d", hours, minutes, seconds);
-	}
-	else{
-		snprintf(buffer, sizeof(&buffer), "%02d:%02d", minutes, seconds);
-	}
-	
-	APP_LOG(APP_LOG_LEVEL_WARNING, "sec: %d, min: %d, hours: %d", seconds,minutes,hours);
-}*/
 
 static void showOverview (GContext *ctx, Layer *layer) {
 	GRect bounds = layer_get_bounds(layer);
@@ -206,28 +184,23 @@ static void showTimeDiff (GContext *ctx) {
 
 		for(uint8_t i =0; i<times[saveInNo-1].noOfCheckPoints; i++) {
 			graphics_context_set_text_color(ctx, GColorBlack);
-			GRect position;	int diff;
 			snprintf(checkNo, sizeof(checkNo), "%d", i+1);
 			
+			
 			//Draws the checkpoint number onto the layer:
-			if(i<5) {	position = GRect(2, 38+(i*25), 16, 20);	}
-			else {	position = GRect(74, 38+((i-5)*25), 16, 20);	}
+			GRect position = (i<5)? GRect(2, 38+(i*25), 16, 20): GRect(74, 38+((i-5)*25), 16, 20);
 			graphics_draw_text(ctx, checkNo, fonts_get_system_font(FONT_KEY_GOTHIC_18_BOLD), position, GTextOverflowModeTrailingEllipsis, GTextAlignmentCenter, NULL);			
 			
 			//Method to calculate the difference between checkpoints:
-			if(i != 0) {	diff = times[saveInNo-1].checkPoints[i] - times[saveInNo-1].checkPoints[i-1];	}
-				else { diff = times[saveInNo-1].checkPoints[i];	}
+			int diff = (i != 0)? times[saveInNo-1].checkPoints[i] - times[saveInNo-1].checkPoints[i-1]: times[saveInNo-1].checkPoints[i];
 			
 			//Get time of the run in (mins:sec) format and places into the time buffer:
-			int seconds = diff % 60;		int minutes = diff / 60;
+			int seconds = diff % 60;	int minutes = diff / 60;
 			snprintf(time_buffer, sizeof(time_buffer), "%02d:%02d", minutes, seconds);	
 
-			//Draws the time difference between checkpoints into calculated positions within the layer:
-			GRect timerBox;
-			if(diff == maxD) {		graphics_context_set_text_color(ctx, GColorBlack);		}
-					else {		graphics_context_set_text_color(ctx, GColorRajah);		}
-			if(i<5) {	timerBox = GRect(18, 38+(i*25), 54, 20);	}
-			else {	timerBox = GRect(90, 38+((i-5)*25), 54, 20);	}
+			//Draws the time difference between checkpoints into calculated positions within the layer:			
+			(diff == maxD)?	graphics_context_set_text_color(ctx, GColorBlack):	graphics_context_set_text_color(ctx, GColorRajah);
+			GRect timerBox = (i<5)? GRect(18, 38+(i*25), 54, 20): GRect(90, 38+((i-5)*25), 54, 20);
 			graphics_draw_text(ctx, time_buffer, fonts_get_system_font(FONT_KEY_GOTHIC_18), timerBox, GTextOverflowModeTrailingEllipsis, GTextAlignmentCenter, NULL);
 		}
 }
@@ -237,12 +210,7 @@ static void stats_update_callback(Layer *layer, GContext *ctx) {
 	GRect infoRect = GRect(0, 0, layer_get_bounds(layer).size.w, 35);
 	graphics_context_set_fill_color(ctx, GColorRajah);
 	graphics_fill_rect(ctx, infoRect, 0, GCornerNone);
-	if(times[saveInNo-1].noOfCheckPoints != 0) {
-		graphics_context_set_fill_color(ctx, GColorBlack);
-	}
-	else{
-		graphics_context_set_fill_color(ctx, GColorRed);
-	}
+	(times[saveInNo-1].noOfCheckPoints != 0)?	graphics_context_set_fill_color(ctx, GColorBlack): graphics_context_set_fill_color(ctx, GColorRed);
 	graphics_fill_circle(ctx, GPoint(17, 17), 12);
 	
 	//Draws the current record number of the layer:
@@ -259,12 +227,15 @@ static void stats_update_callback(Layer *layer, GContext *ctx) {
 	} else {
 		//Different methods are called for different tab numbers:
 		switch(stattab) {
-			case TAB1: showOverview(ctx, layer);
-								 break;
-			case TAB2: showNoOfCheckPoints(ctx);
-								 break;
-			case TAB3: showTimeDiff(ctx);
-								 break;
+			case TAB1: 
+				showOverview(ctx, layer);
+				break;
+			case TAB2: 
+				showNoOfCheckPoints(ctx);
+				break;
+			case TAB3: 
+				showTimeDiff(ctx);
+				break;
 		}
 	}
 }
@@ -273,18 +244,13 @@ static char* runStats(void) {
 	//Different labels for when the select button is pressed, tab number is incremented:
 	switch(stattab) {
 		default:
-		case TAB1:	if(times[saveInNo-1].noOfCheckPoints != 0) {
-									if((times[saveInNo-1].dateTime != NULL) && (times[saveInNo-1].dateTime[0] == '\0')) {
-										APP_LOG(APP_LOG_LEVEL_WARNING, "dateTime is EMPTY");
-										return "Buffer not big enough";
-									}
-									else {
-										return times[saveInNo-1].dateTime;
-									}
-								}
-								else {
-									return "Empty";
-								}
+		case TAB1:	
+			if(times[saveInNo-1].noOfCheckPoints != 0) {
+				return ((times[saveInNo-1].dateTime != NULL) && (times[saveInNo-1].dateTime[0] == '\0'))? "Buffer not big enough": times[saveInNo-1].dateTime;
+			}
+			else {
+				return "Empty";
+			}
 		case TAB2: return "Checkpoints";
 		case TAB3: return "Durations";
 	}
@@ -315,10 +281,8 @@ static void stats_window_load(Window *window) {
 	
 	//Method to read the data stored in the 'run' class/saved records:
 	if (persist_exists(STIME_KEY)) {
-		//persist_read_data(STIME_KEY, &times, sizeof(times));
-		int valueRead;
-		valueRead = persist_read_data(STIME_KEY, &times, sizeof(times));
-		APP_LOG(APP_LOG_LEVEL_WARNING, "Read %d bytes from settings", valueRead);
+		persist_read_data(STIME_KEY, &times, sizeof(times));
+			//APP_LOG(APP_LOG_LEVEL_WARNING, "Read %d bytes from settings", valueRead);
 	}
 	
 	//Initialises the current tab, the header of the layer and the record number:

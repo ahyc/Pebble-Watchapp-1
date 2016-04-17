@@ -5,7 +5,7 @@
     ],
     "companyName": "adrianchung@hotmail.co.uk",
     "enableMultiJS": true,
-    "longName": "RUN MAXv1.0",
+    "longName": "RUN MAX",
     "projectType": "native",
     "resources": {
         "media": [
@@ -26,12 +26,12 @@
         ]
     },
     "sdkVersion": "3",
-    "shortName": "RUN MAXv1.0",
+    "shortName": "RUN MAX",
     "targetPlatforms": [
         "basalt"
     ],
     "uuid": "2c74327b-af33-47a4-ae98-f20d32e45df7",
-    "versionLabel": "1.0",
+    "versionLabel": "1.1",
     "watchapp": {
         "watchface": false
     }

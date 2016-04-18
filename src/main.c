@@ -128,31 +128,31 @@ static StatusBarLayer* status_bar_create() {
 	status_bar = status_bar_layer_create();
 	GRect frame = GRect(0, 0, 144, STATUS_BAR_HEIGHT);
 	layer_set_frame(status_bar_layer_get_layer(status_bar), frame);
-	
+
 	return status_bar;
 }
 
 static void main_window_load(Window *window) {
-  //Layer pointer for the bounds of the window layer:
+	//Layer pointer for the bounds of the window layer:
 	Layer *window_layer = window_get_root_layer(window);
-  GRect window_bounds = layer_get_bounds(window_layer);
-	
+	GRect window_bounds = layer_get_bounds(window_layer);
+
 	//Initialising custom font:
 	s_font_30 = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_AGENCY_BOLD_30));
 
-  //Create Layer below the status bar of width 15:
-  s_canvas_layer = layer_create(GRect(0, STATUS_BAR_HEIGHT, window_bounds.size.w, window_bounds.size.h-STATUS_BAR_HEIGHT));
-  layer_add_child(window_layer, s_canvas_layer);
-	
+	//Create Layer below the status bar of width 15:
+	s_canvas_layer = layer_create(GRect(0, STATUS_BAR_HEIGHT, window_bounds.size.w, window_bounds.size.h-STATUS_BAR_HEIGHT));
+	layer_add_child(window_layer, s_canvas_layer);
+
 	//Initialising automatic redrawing of the menu layer:
 	layer_set_update_proc(s_canvas_layer, main_update_callback);
 
 	//Initialising animated gif layers:
 	s_bitmap_layer = bitmap_layer_create(GRect(85,20,40,40));
 	bitmap_layer_set_compositing_mode(s_bitmap_layer, GCompOpSet);
-  layer_insert_above_sibling(bitmap_layer_get_layer(s_bitmap_layer), s_canvas_layer);
-  load_sequence();
-	
+	layer_insert_above_sibling(bitmap_layer_get_layer(s_bitmap_layer), s_canvas_layer);
+	load_sequence();
+
 	//Check vibration status:
 	checkVSettings();
 }	
@@ -160,28 +160,28 @@ static void main_window_load(Window *window) {
 static void main_window_unload(Window *window) {
 	//Unloading all custom fonts used:
 	fonts_unload_custom_font(s_font_30);
-	
+
 	//Destroying the menu and image-holding layer:
 	layer_destroy(s_canvas_layer);
 	bitmap_layer_destroy(s_bitmap_layer);
-	
+
 	//Destroys sequence and gbitmap if not null:
-  if(s_sequence) {	gbitmap_sequence_destroy(s_sequence);	}
-  if(s_bitmap) {	gbitmap_destroy(s_bitmap);	}
+	if(s_sequence) {	gbitmap_sequence_destroy(s_sequence);	}
+	if(s_bitmap) {	gbitmap_destroy(s_bitmap);	}
 }
 
 static void init() {
-  // Create main Window
-  s_main_window = window_create();
+	// Create main Window
+	s_main_window = window_create();
 
 	//Adding status bar onto the main window and initialising its colours:
 	layer_add_child(window_get_root_layer(s_main_window), status_bar_layer_get_layer(status_bar_create()));	
 	status_bar_layer_set_colors(status_bar, GColorBlack, GColorWhite);
-	
-  window_set_window_handlers(s_main_window, (WindowHandlers) {
-    .load = main_window_load,
-    .unload = main_window_unload,
-  });
+
+	window_set_window_handlers(s_main_window, (WindowHandlers) {
+		.load = main_window_load,
+		.unload = main_window_unload,
+	});
 	window_set_click_config_provider(s_main_window, click_config_provider);
 	window_stack_push(s_main_window, true);	
 }
@@ -189,9 +189,9 @@ static void init() {
 static void deinit() {	 
 	//Destroys status bar:
 	status_bar_layer_destroy(status_bar);
-	
-  // Destroy main Window
-  window_destroy(s_main_window);
+
+	// Destroy main Window
+	window_destroy(s_main_window);
 }
 
 int main(void) {

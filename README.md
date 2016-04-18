@@ -36,14 +36,12 @@ Main window:
 
 Run window:
 
-![Alt text]( screenshots/run1.png "Run window:")      ![Alt text]( screenshots/run2.png "Run window with a completed record:")  
+![Alt text]( screenshots/run1.png "Run window:")     ![Alt text]( screenshots/run2.png "Run window with a completed record:")  
 
 
 Stats window:
 
-![Alt text]( screenshots/stats1.png "Stats window:")      ![Alt text]( screenshots/stats3.png "Stat window with a completed record:")
-
-![Alt text]( screenshots/stats4.png 'Bottom button - [held] shows number of checkpoints in each record:')
+![Alt text]( screenshots/stats1.png "Stats window:")     ![Alt text]( screenshots/stats3.png "Stat window with a completed record:")     ![Alt text]( screenshots/stats4.png 'Bottom button - [held] shows number of checkpoints in each record:')
 
 
 Settings window:

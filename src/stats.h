@@ -4,7 +4,7 @@
 
 typedef enum {
 	TAB1 = 0,
-	TAB2 = 1, 
+	TAB2 = 1,
 	TAB3 = 2,
 } statTab;
 

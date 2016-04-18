@@ -17,9 +17,9 @@ typedef struct Runner {
 } Runner;
 
 typedef struct timeSaver {
-	uint16_t checkPoints[maxCheckPoints];	
+	uint16_t checkPoints[maxCheckPoints];
 	char dateTime[30];
-	uint8_t noOfCheckPoints;	
+	uint8_t noOfCheckPoints;
 } __attribute__((__packed__)) timeSaver;
 	
 extern void run_create(void);

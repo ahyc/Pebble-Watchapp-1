@@ -3,8 +3,8 @@
 #define VSET_KEY 222
 
 typedef enum {
-    noVibes = 0,
-    Vibes = 1,
+	noVibes = 0,
+	Vibes = 1,
 } vibeStatus;
 
 typedef struct vibes {

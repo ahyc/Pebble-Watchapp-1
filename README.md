@@ -29,21 +29,21 @@ Watchapp written in C for the Pebble Time watches. This watchapp keeps 5 records
 
 ##Screenshots of the watchapp:##
 
-Main window:
+1. Main window:
 
-![Alt text]( screenshots/main.png "Main window:")  
-
-
-Run window:
-
-![Alt text]( screenshots/run1.png "Run window:")     ![Alt text]( screenshots/run2.png "Run window with a completed record:")  
+![Alt text]( screenshots/main.png "Main window")  
 
 
-Stats window:
+2. Run window:
 
-![Alt text]( screenshots/stats1.png "Stats window:")     ![Alt text]( screenshots/stats3.png "Stat window with a completed record:")     ![Alt text]( screenshots/stats4.png 'Bottom button - [held] shows number of checkpoints in each record:')
+![Alt text]( screenshots/run1.png "Run window")     ![Alt text]( screenshots/run2.png "Run window with a completed record")  
 
 
-Settings window:
+3. Stats window:
 
-![Alt text]( screenshots/settings.png "Settings window:")
+![Alt text]( screenshots/stats1.png "Stats window")     ![Alt text]( screenshots/stats3.png "Stat window with a completed record")     ![Alt text]( screenshots/stats4.png 'Bottom button - [held] shows number of checkpoints in each record')
+
+
+4. Settings window:
+
+![Alt text]( screenshots/settings.png "Settings window")

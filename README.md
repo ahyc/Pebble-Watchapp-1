@@ -5,36 +5,47 @@ Watchapp written in C for the Pebble Time watches. This watchapp keeps 5 records
 
 1. Main window to navigate to the run, stats, and settings windows
 
+
 2. Run window showing:
-    * Timer and current record number
-    * Date when the checkpoints were recorded
-    * The last checkpoint time and the number of checkpoints in record
+    1. Timer and current record number
+    2. Date when the checkpoints were recorded
+    3. The last checkpoint time and the number of checkpoints in record
+
 
 3. Stats window with three tabs:
-    * Overview tab:
+    1. Overview tab:
       * Total duration of record
       * Number of checkpoints in record
       * Maximum duration between two checkpoints
-    * Checkpoints tab - shows time recorded in each checkpoint
-    * Durations tab - shows time durations between checkpoints
+    2. Checkpoints tab - shows time recorded in each checkpoint
+    3. Durations tab - shows time durations between checkpoints
+
 
 4. Settings window:
     * Changes the vibration settings of each window
+
 
 - - - -
 
 ##Screenshots of the watchapp:##
 
-1. ![Alt text]( screenshots/main.png "Main window:")  
+Main window:
 
-2. ![Alt text]( screenshots/run1.png "Run window:")  
+![Alt text]( screenshots/main.png "Main window:")  
 
-  * ![Alt text]( screenshots/run2.png "Run window with a completed record:")  
 
-3. ![Alt text]( screenshots/stats1.png "Stats window:")  
+Run window:
 
-  * ![Alt text]( screenshots/stats3.png "Stat window with a completed record:")
+![Alt text]( screenshots/run1.png "Run window:")      ![Alt text]( screenshots/run2.png "Run window with a completed record:")  
 
-  * ![Alt text]( screenshots/stats4.png 'Bottom button - [held] shows number of checkpoints in each record:')
 
-4. ![Alt text]( screenshots/settings.png "Settings window:")
+Stats window:
+
+![Alt text]( screenshots/stats1.png "Stats window:")      ![Alt text]( screenshots/stats3.png "Stat window with a completed record:")
+
+![Alt text]( screenshots/stats4.png 'Bottom button - [held] shows number of checkpoints in each record:')
+
+
+Settings window:
+
+![Alt text]( screenshots/settings.png "Settings window:")

@@ -5,16 +5,15 @@ Screenshots of the watchapp:
 
 Main window:  
 
-![Screenshot]( main.png )
+![Alt text]( screenshots/main.png "Main window:")
 
 Statistics window:  
 
-![Screenshot]( stats1.png )
+![Alt text]( screenshots/stats1.png "Statistics window:")
 
   Stats window when bottom button is held:  
-  
-  ![Screenshot]( stats2.png )
 
-Settings window:  
+  ![Alt text]( screenshots/stats2.png 'Stats window when bottom button is held:')
 
-![Screenshot]( settings.png )
+
+![Alt text]( screenshots/settings.png "Settings window:")

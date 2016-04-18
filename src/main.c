@@ -35,7 +35,7 @@ static void timer_handler(void *context) {
 static void drawMenu (Layer *layer, GContext *ctx, GColor color1, GColor color2, GColor color3) {
 	GRect bounds = layer_get_bounds(layer);  
 	graphics_context_set_stroke_width(ctx, 5);
-	
+
 	for(int x = 1; x < 4; x++) {	
 		switch(x)
 		{
@@ -73,24 +73,24 @@ static void drawMenu (Layer *layer, GContext *ctx, GColor color1, GColor color2,
 }
 
 static void load_sequence() {
-  //Free old data:
-  if(s_sequence) {
-    gbitmap_sequence_destroy(s_sequence);
-    s_sequence = NULL;
-  }
-  if(s_bitmap) {
-    gbitmap_destroy(s_bitmap);
-    s_bitmap = NULL;
-  }
+	//Free old data:
+	if(s_sequence) {
+		gbitmap_sequence_destroy(s_sequence);
+		s_sequence = NULL;
+	}
+	if(s_bitmap) {
+		gbitmap_destroy(s_bitmap);
+		s_bitmap = NULL;
+	}
 
-  //Create sequence:
-  s_sequence = gbitmap_sequence_create_with_resource(RESOURCE_ID_WATCH_GIF);
+	//Create sequence:
+	s_sequence = gbitmap_sequence_create_with_resource(RESOURCE_ID_WATCH_GIF);
 
-  //Create GBitmap:
-  s_bitmap = gbitmap_create_blank(gbitmap_sequence_get_bitmap_size(s_sequence), GBitmapFormat8Bit);
+	//Create GBitmap:
+	s_bitmap = gbitmap_create_blank(gbitmap_sequence_get_bitmap_size(s_sequence), GBitmapFormat8Bit);
 
-  //Begin animation:
-  app_timer_register(1, timer_handler, NULL);
+	//Begin animation:
+	app_timer_register(1, timer_handler, NULL);
 }
 
 static void main_update_callback(Layer *layer, GContext *ctx) {

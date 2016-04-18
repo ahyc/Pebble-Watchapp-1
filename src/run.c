@@ -114,7 +114,7 @@ static void up_click_handler(ClickRecognizerRef recognizer, void *context) {
 		initialiseRunner(&runmax);
 		
 		initialiseDateTime();
-			APP_LOG(APP_LOG_LEVEL_WARNING, "%s", times[saveInNo].dateTime);
+			//APP_LOG(APP_LOG_LEVEL_WARNING, "%s", times[saveInNo].dateTime);
 		
 		layer_mark_dirty(text_layer_get_layer(s_run_info_layer));
 		layer_set_hidden(bbutton_layer, (times[saveInNo].noOfCheckPoints!= 0)? false: true);

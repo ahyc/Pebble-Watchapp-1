@@ -97,16 +97,15 @@ static void back_click_handler(ClickRecognizerRef recognizer, void *context) {
 }
 
 
-
+//Initialise and draw the date in which the checkpoints were recorded:
 void initialiseDateTime (void) {
 	if(times[saveInNo].noOfCheckPoints == 0) {
 		time(&currentTime);
 		struct tm *ptr = localtime(&currentTime);
 		strftime(times[saveInNo].dateTime, sizeof(times[saveInNo].dateTime), "%e/%m/%Y", ptr);
 	}
+	text_layer_set_text(s_run_info_layer, times[saveInNo].dateTime);
 }
-
-
 
 static void up_click_handler(ClickRecognizerRef recognizer, void *context) {
 	//Increments record number if timer is stopped and redraws current window layer:
@@ -115,7 +114,7 @@ static void up_click_handler(ClickRecognizerRef recognizer, void *context) {
 		initialiseRunner(&runmax);
 		
 		initialiseDateTime();
-			//APP_LOG(APP_LOG_LEVEL_WARNING, "%s, size is: %d", times[saveInNo].dateTime,(int)sizeof(times[saveInNo].dateTime));
+			APP_LOG(APP_LOG_LEVEL_WARNING, "%s", times[saveInNo].dateTime);
 		
 		layer_mark_dirty(text_layer_get_layer(s_run_info_layer));
 		layer_set_hidden(bbutton_layer, (times[saveInNo].noOfCheckPoints!= 0)? false: true);
@@ -177,13 +176,13 @@ void initialiseCheckPoints (void) {
 			//APP_LOG(APP_LOG_LEVEL_WARNING, "Read %d bytes from settings", valueRead);
 	}
 	else {
-		initialiseDateTime();
-			//APP_LOG(APP_LOG_LEVEL_WARNING, "%s, size is: %d", times[saveInNo].dateTime,(int)sizeof(times[saveInNo].dateTime));
 		times[saveInNo].noOfCheckPoints = 0;
 		for(int index = 0; index < maxCheckPoints; index++) {
 				times[saveInNo].checkPoints[index] = 0;
 		}
 	}
+	initialiseDateTime();
+		//APP_LOG(APP_LOG_LEVEL_WARNING, "%s, size is: %d", times[saveInNo].dateTime,(int)sizeof(times[saveInNo].dateTime));
 }
 
 //Method to draw the current timer time:
@@ -312,7 +311,6 @@ static void run_window_load(Window *window) {
 	saveInNo = s_uptime = 0;
 	initialiseRunner(&runmax);
 	initialiseCheckPoints();
-	text_layer_set_text(s_run_info_layer, times[saveInNo].dateTime);
 	checkVSettings();
 	
 	//Set label layer hidden if there are no checkpoints in record:
